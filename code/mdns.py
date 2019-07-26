@@ -128,31 +128,31 @@ class MyListener(object):
             self.all_info_dict[x] = current_info["info"]
 
 def main():
-        zeroconf = Zeroconf()
-        listener = MyListener()
-        browser = ServiceBrowser(zeroconf, "_ewelink._tcp.local.",listener= listener)
-        while True:
-                if listener.all_sub_num>0:
-                    dict=listener.all_info_dict.copy()
-                    for x in dict.keys():
-                        info=dict[x]
-                        info=zeroconf.get_service_info(info.type,x)
-                        if info!= None:
-                            data=info.properties
-                            cur_str=x[8:18]+"  "+parseAddress(info.address)+"  "+str(info.port)+"  "   +str(data)
-                            print(cur_str)
-                if len(listener.all_del_sub)>0:
-                        for x in listener.all_del_sub:
-                            cur_str=x[8:18]+"\nDEL"
-                            print(cur_str)
-                time.sleep(0.5)
+    zeroconf = Zeroconf()
+    listener = MyListener()
+    browser = ServiceBrowser(zeroconf, "_ewelink._tcp.local.",listener= listener)
+    while True:
+        if listener.all_sub_num>0:
+            dict=listener.all_info_dict.copy()
+            for x in dict.keys():
+                info=dict[x]
+                info=zeroconf.get_service_info(info.type,x)
+                if info!= None:
+                    data=info.properties
+                    cur_str=x[8:18]+"  "+parseAddress(info.address)+"  "+str(info.port)+"  "   +str(data)
+                    print(cur_str)
+        if len(listener.all_del_sub)>0:
+            for x in listener.all_del_sub:
+                cur_str=x[8:18]+"\nDEL"
+                print(cur_str)
+        time.sleep(0.5)
 
 def parseAddress(address):
-        add_list = []
-        for i in range(4):
-            add_list.append(int(address.hex()[(i*2):(i+1)*2], 16))
-        add_str = str(add_list[0]) + "." + str(add_list[1]) + "." + str(add_list[2])+ "." + str(add_list[3])
-        return add_str
+    add_list = []
+    for i in range(4):
+        add_list.append(int(address.hex()[(i*2):(i+1)*2], 16))
+    add_str = str(add_list[0]) + "." + str(add_list[1]) + "." + str(add_list[2])+ "." + str(add_list[3])
+    return add_str
 
 
 if __name__ == "__main__":
